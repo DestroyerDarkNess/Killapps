@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">KillApps</string>
+    <string name="accessibility_description">KillApps needs Accessibility to navigate to each app\'s Settings page and tap the Force Stop button automatically.</string>
+    <string name="btn_kill_all">KILL ALL APPS</string>
+    <string name="btn_stop">CANCEL</string>
+    <string name="status_idle">Ready. Select apps or tap Kill All.</string>
+    <string name="status_running">Closing apps…</string>
+    <string name="status_done">Done! %1$d apps closed.</string>
+    <string name="status_no_accessibility">Accessibility Service is not enabled. Please enable it in Settings.</string>
+    <string name="force_stop">Force stop</string>
+    <string name="force_stop_2">Forzar detención</string>
+    <string name="force_stop_3">Forçar parada</string>
+    <string name="force_stop_4">Forçar paragem</string>
+    <string name="force_stop_5">Arrêter de force</string>
+    <string name="force_stop_6">Stoppen erzwingen</string>
+    <string name="ok_button">OK</string>
+    <string name="overlay_closing">Closing: %1$s</string>
+    <string name="overlay_progress">%1$d / %2$d</string>
+</resources>

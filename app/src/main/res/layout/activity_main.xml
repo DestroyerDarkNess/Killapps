@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#1A1A2E"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <!-- Header -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:text="KillApps"
+        android:textColor="#FF1744"
+        android:textSize="32sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Force stop all background apps"
+        android:textColor="#888888"
+        android:textSize="14sp" />
+
+    <!-- Status -->
+    <TextView
+        android:id="@+id/tvStatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:background="#222244"
+        android:gravity="center"
+        android:padding="16dp"
+        android:text="@string/status_idle"
+        android:textColor="#CCCCCC"
+        android:textSize="14sp" />
+
+    <!-- App count -->
+    <TextView
+        android:id="@+id/tvAppCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="0 apps found"
+        android:textColor="#AAAAAA"
+        android:textSize="13sp" />
+
+    <!-- Scrollable app list -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:layout_weight="1"
+        android:background="#16162A"
+        android:padding="8dp">
+
+        <LinearLayout
+            android:id="@+id/appListContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+    </ScrollView>
+
+    <!-- Kill All Button -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnKillAll"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:backgroundTint="#FF1744"
+        android:text="@string/btn_kill_all"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <!-- Enable Accessibility Button (shown when service is not active) -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnEnableAccessibility"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginBottom="24dp"
+        android:text="Enable Accessibility Service"
+        android:textColor="#FF5252"
+        android:textSize="12sp"
+        android:visibility="gone" />
+
+</LinearLayout>
