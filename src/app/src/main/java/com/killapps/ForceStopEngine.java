@@ -110,8 +110,9 @@ public class ForceStopEngine {
             return;
         }
 
-        // Show the progress overlay
-        mOverlay = new ProgressOverlay(context);
+        // Show the progress overlay using AccessibilityService context if available
+        Context overlayContext = AppKillerService.getInstance() != null ? AppKillerService.getInstance() : context;
+        mOverlay = new ProgressOverlay(overlayContext);
         mOverlay.show();
         mOverlay.updateProgress(0, mAppsToKill.size(), "");
 

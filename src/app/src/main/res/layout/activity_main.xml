@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/ev_bg_dim"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:paddingTop="32dp"
+    android:paddingBottom="16dp"
+    android:paddingStart="24dp"
+    android:paddingEnd="24dp">
+
+    <!-- Header & Dashboard -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="24dp">
+
+        <!-- RAM Circular Widget -->
+        <FrameLayout
+            android:layout_width="64dp"
+            android:layout_height="64dp">
+            <ProgressBar
+                android:id="@+id/pbRam"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:indeterminate="false"
+                android:max="100"
+                android:progress="0"
+                android:progressDrawable="@drawable/circular_progress_ram" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/tvRamPercent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:textColor="@color/ev_fg"
+                    android:textStyle="bold"
+                    android:text="0%"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="9sp"
+                    android:textColor="@color/ev_fg_dim"
+                    android:text="RAM"/>
+            </LinearLayout>
+        </FrameLayout>
+
+        <!-- System Info Center Block -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <!-- Device Model -->
+            <TextView
+                android:id="@+id/tvDeviceModel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Device"
+                android:textColor="@color/ev_blue"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:maxLines="1"
+                android:ellipsize="end" />
+
+            <!-- OS Version -->
+            <TextView
+                android:id="@+id/tvDeviceOs"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Android OS"
+                android:textColor="@color/ev_fg"
+                android:textSize="11sp" />
+
+            <!-- RAM Stats Detail -->
+            <TextView
+                android:id="@+id/tvRamDetails"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0GB / 0GB"
+                android:textColor="@color/ev_fg_dim"
+                android:textSize="10sp"
+                android:layout_marginTop="2dp" />
+
+        </LinearLayout>
+
+        <!-- CPU Circular Widget -->
+        <FrameLayout
+            android:layout_width="64dp"
+            android:layout_height="64dp">
+            <ProgressBar
+                android:id="@+id/pbCpu"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:indeterminate="false"
+                android:max="100"
+                android:progress="0"
+                android:progressDrawable="@drawable/circular_progress_cpu" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/tvCpuPercent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:textColor="@color/ev_fg"
+                    android:textStyle="bold"
+                    android:text="0%"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="9sp"
+                    android:textColor="@color/ev_fg_dim"
+                    android:text="CPU"/>
+            </LinearLayout>
+        </FrameLayout>
+
+    </LinearLayout>
+
+    <!-- Filters / Fluent Chips -->
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none"
+        android:layout_marginBottom="16dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <!-- Check All Toggle -->
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipSelectAll"
+                style="@style/Widget.MaterialComponents.Chip.Action"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:text="Uncheck All"
+                android:textColor="@color/ev_blue"
+                app:chipBackgroundColor="@color/ev_bg0"
+                app:chipStrokeColor="@color/ev_blue"
+                app:chipStrokeWidth="1dp" />
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipGroupFilters"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:singleSelection="true"
+                app:selectionRequired="true">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipFilterUser"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="User Apps"
+                    android:textColor="@color/gamer_chip_text"
+                    app:chipBackgroundColor="@color/gamer_chip_background"
+                    android:checked="true"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipFilterSystem"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/gamer_chip_text"
+                    app:chipBackgroundColor="@color/gamer_chip_background"
+                    android:text="System Apps"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipFilterAll"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/gamer_chip_text"
+                    app:chipBackgroundColor="@color/gamer_chip_background"
+                    android:text="All Apps"/>
+
+            </com.google.android.material.chip.ChipGroup>
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <!-- Status & Count -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="8dp">
+
+        <TextView
+            android:id="@+id/tvAppCount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="0 apps selected"
+            android:textColor="@color/ev_fg_dim"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <!-- Gamer List Container -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@drawable/bg_gamer_modal"
+        android:layout_marginBottom="16dp">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvApps"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:padding="8dp" />
+            
+        <ProgressBar
+            android:id="@+id/pbLoadingApps"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone"/>
+    </FrameLayout>
+
+    <!-- Kill All Button Gamer -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnKillAll"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        app:cornerRadius="8dp"
+        android:backgroundTint="@color/ev_green"
+        android:text="Boost Devices Now"
+        android:textColor="@color/ev_bg_dim"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:icon="@drawable/ic_rocket"
+        app:iconTint="@color/ev_bg_dim"
+        app:iconGravity="textStart" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnEnableAccessibility"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Grant Permissions"
+        android:textColor="@color/ev_red"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_marginTop="8dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Created by DestroyerDarkNess"
+            android:textColor="@color/ev_fg_dim"
+            android:textStyle="bold"
+            android:textSize="12sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="github.com/DestroyerDarkNess"
+            android:autoLink="web"
+            android:textColorLink="@color/ev_blue"
+            android:textColor="@color/ev_fg_dim"
+            android:textSize="11sp" />
+    </LinearLayout>
+
+</LinearLayout>

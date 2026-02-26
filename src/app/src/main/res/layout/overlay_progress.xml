@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#D0000000"
+    android:padding="32dp">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/bg_gamer_modal">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="24dp"
+            android:gravity="center">
+
+            <!-- Title -->
+            <TextView
+                android:id="@+id/tvOverlayTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                android:text="Optimizing Devices..."
+                android:textColor="@color/ev_fg"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <!-- Progress Bar -->
+            <ProgressBar
+                android:id="@+id/pbOverlayProgress"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="24dp"
+                android:layout_marginBottom="16dp"
+                android:progressTint="@color/ev_green"
+                android:progressBackgroundTint="@color/ev_bg1" />
+
+            <!-- Progress Counter -->
+            <TextView
+                android:id="@+id/tvOverlayCounter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="0 / 0"
+                android:textColor="@color/ev_fg_dim"
+                android:textSize="14sp" />
+
+            <!-- Current App Name -->
+            <TextView
+                android:id="@+id/tvOverlayAppName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                android:text="Detecting apps..."
+                android:textColor="@color/ev_blue"
+                android:textSize="16sp"
+                android:textStyle="italic" />
+
+            <!-- Cancel Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnOverlayCancel"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:backgroundTint="@color/ev_red"
+                android:text="Cancel Optimization"
+                android:textColor="@color/ev_bg_dim"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:cornerRadius="8dp" />
+
+        </LinearLayout>
+
+        <!-- Gamer Corners Overlay -->
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_hud_corners"
+            android:alpha="0.8" />
+    </FrameLayout>
+</FrameLayout>

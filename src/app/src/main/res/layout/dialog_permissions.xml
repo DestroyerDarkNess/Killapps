@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="340dp"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_gamer_modal">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fadeScrollbars="false"
+        android:scrollbars="vertical"
+        android:padding="4dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Icon -->
+            <ImageView
+                android:layout_width="72dp"
+                android:layout_height="72dp"
+                android:layout_marginBottom="8dp"
+                android:src="@drawable/ic_shield_check"
+                app:tint="@color/ev_blue" />
+
+            <!-- Title -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:gravity="center"
+                android:text="System Access Required"
+                android:textColor="@color/ev_fg"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+
+            <!-- Info Card: What to do -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:background="#1AFFFFFF"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:text="What you need to do:"
+                    android:textColor="@color/ev_blue"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Please grant the following two permissions to continue using KillApps. Tap each button below to open your Android settings, find PixelBot/KillApps, and switch the toggle to ON."
+                    android:textColor="@color/ev_fg"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+            <!-- Info Card: Why -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                android:background="#0AFFFFFF"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:text="Why is this necessary?"
+                    android:textColor="@color/ev_yellow"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="KillApps works by mimicking human touches (Accessibility) and overlaying a progress screen (Display Overlay) to automatically navigate your system settings and close multiple apps instantly. We do not collect or transmit personal data."
+                    android:textColor="@color/ev_fg_dim"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+            <!-- Accessibility Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnGrantAccessibility"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginBottom="12dp"
+                android:backgroundTint="@color/ev_red"
+                android:text="1. Grant Accessibility"
+                android:textColor="@color/ev_bg_dim"
+                app:cornerRadius="8dp" />
+
+            <!-- Overlay Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnGrantOverlay"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginBottom="8dp"
+                android:backgroundTint="@color/ev_red"
+                android:text="2. Grant Overlay"
+                android:textColor="@color/ev_bg_dim"
+                app:cornerRadius="8dp" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Gamer Corners Overlay -->
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/ic_hud_corners"
+        android:scaleType="fitXY"
+        android:alpha="0.8" />
+
+</FrameLayout>

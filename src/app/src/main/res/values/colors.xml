@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    
+    <!-- Everforest Dark Theme -->
+    <color name="ev_bg_dim">#232A2E</color>
+    <color name="ev_bg0">#2D353B</color>
+    <color name="ev_bg1">#343F44</color>
+    <color name="ev_bg2">#3D484D</color>
+    
+    <color name="ev_fg">#D3C6AA</color>
+    <color name="ev_fg_dim">#9DA9A0</color>
+    
+    <color name="ev_green">#A7C080</color>
+    <color name="ev_blue">#7FBBB3</color>
+    <color name="ev_red">#E67E80</color>
+    <color name="ev_yellow">#DBBC7F</color>
+    <color name="ev_orange">#E69875</color>
+    <color name="ev_purple">#D699B6</color>
+    
+    <color name="chip_fluent_color">@color/ev_bg1</color>
+    <color name="chip_fluent_stroke">@color/ev_blue</color>
+</resources>

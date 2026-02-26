@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.KillApps" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/ev_bg_dim</item>
+        <item name="colorPrimaryVariant">@color/ev_bg0</item>
+        <item name="colorOnPrimary">@color/ev_fg</item>
+        <item name="colorSecondary">@color/ev_blue</item>
+        <item name="colorOnSecondary">@color/ev_bg_dim</item>
+        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+    </style>
+</resources>

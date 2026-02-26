@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Base Background -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/ev_bg0" />
+            <!-- Square corners via no radius specified -->
+            <stroke android:width="2dp" android:color="@color/ev_blue" />
+        </shape>
+    </item>
+    
+    <!-- Gamer Scanlines/Grid effect (Subtle dashed pattern) -->
+    <item>
+        <shape android:shape="rectangle">
+            <stroke android:width="1dp" android:color="#0AFFFFFF" android:dashWidth="2dp" android:dashGap="4dp" />
+        </shape>
+    </item>
+</layer-list>

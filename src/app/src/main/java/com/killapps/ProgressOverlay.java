@@ -9,7 +9,7 @@ import android.os.Looper;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.WindowManager;
-import android.widget.LinearLayout;
+import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -23,7 +23,7 @@ public class ProgressOverlay {
     private static final String TAG = "ProgressOverlay";
     private final Context mContext;
     private final WindowManager mWindowManager;
-    private LinearLayout mOverlayView;
+    private ViewGroup mOverlayView;
     private TextView mTitleText;
     private TextView mAppNameText;
     private TextView mProgressText;
@@ -38,55 +38,18 @@ public class ProgressOverlay {
     }
 
     private void createView() {
-        // Root container
-        mOverlayView = new LinearLayout(mContext);
-        mOverlayView.setOrientation(LinearLayout.VERTICAL);
-        mOverlayView.setGravity(Gravity.CENTER);
-        mOverlayView.setBackgroundColor(Color.parseColor("#E0000000")); // 88% opaque black
-        mOverlayView.setPadding(80, 80, 80, 80);
+        android.view.ContextThemeWrapper themeContext = new android.view.ContextThemeWrapper(mContext, R.style.Theme_KillApps);
+        mOverlayView = (ViewGroup) android.view.LayoutInflater.from(themeContext).inflate(R.layout.overlay_progress, null);
 
-        // Title
-        mTitleText = new TextView(mContext);
-        mTitleText.setText("Closing Apps...");
-        mTitleText.setTextColor(Color.WHITE);
-        mTitleText.setTextSize(24);
-        mTitleText.setGravity(Gravity.CENTER);
-        LinearLayout.LayoutParams titleParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        titleParams.bottomMargin = 60;
-        mOverlayView.addView(mTitleText, titleParams);
+        mTitleText = mOverlayView.findViewById(R.id.tvOverlayTitle);
+        mProgressBar = mOverlayView.findViewById(R.id.pbOverlayProgress);
+        mProgressText = mOverlayView.findViewById(R.id.tvOverlayCounter);
+        mAppNameText = mOverlayView.findViewById(R.id.tvOverlayAppName);
 
-        // Progress bar
-        mProgressBar = new ProgressBar(mContext, null, android.R.attr.progressBarStyleHorizontal);
-        mProgressBar.setMax(100);
-        mProgressBar.setProgress(0);
-        mProgressBar.setMinimumHeight(12);
-        LinearLayout.LayoutParams barParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, 20);
-        barParams.bottomMargin = 40;
-        barParams.leftMargin = 40;
-        barParams.rightMargin = 40;
-        mOverlayView.addView(mProgressBar, barParams);
-
-        // Progress counter text
-        mProgressText = new TextView(mContext);
-        mProgressText.setText("0 / 0");
-        mProgressText.setTextColor(Color.parseColor("#CCCCCC"));
-        mProgressText.setTextSize(16);
-        mProgressText.setGravity(Gravity.CENTER);
-        LinearLayout.LayoutParams counterParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        counterParams.bottomMargin = 30;
-        mOverlayView.addView(mProgressText, counterParams);
-
-        // Current app name
-        mAppNameText = new TextView(mContext);
-        mAppNameText.setText("");
-        mAppNameText.setTextColor(Color.parseColor("#FF5252"));
-        mAppNameText.setTextSize(18);
-        mAppNameText.setGravity(Gravity.CENTER);
-        mOverlayView.addView(mAppNameText, new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        android.view.View btnCancel = mOverlayView.findViewById(R.id.btnOverlayCancel);
+        btnCancel.setOnClickListener(v -> {
+            ForceStopEngine.getInstance().stop();
+        });
     }
 
     /**
@@ -99,16 +62,23 @@ public class ProgressOverlay {
                     ? WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
                     : WindowManager.LayoutParams.TYPE_PHONE;
 
+            if (mContext instanceof android.accessibilityservice.AccessibilityService) {
+                overlayType = WindowManager.LayoutParams.TYPE_ACCESSIBILITY_OVERLAY;
+            }
+
             WindowManager.LayoutParams params = new WindowManager.LayoutParams(
                     WindowManager.LayoutParams.MATCH_PARENT,
                     WindowManager.LayoutParams.MATCH_PARENT,
                     overlayType,
-                    WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE |
-                            WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL |
-                            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE |
-                            WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN,
+                    WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH |
+                            WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN |
+                            WindowManager.LayoutParams.FLAG_BLUR_BEHIND,
                     PixelFormat.TRANSLUCENT);
             params.gravity = Gravity.CENTER;
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                params.setBlurBehindRadius(30);
+            }
 
             mHandler.post(() -> {
                 try {
