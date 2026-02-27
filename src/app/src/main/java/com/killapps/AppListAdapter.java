@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppViewHolder> {
+    private static final String TAG = "AppListAdapter";
 
     private List<AppItem> appList = new ArrayList<>();
     private List<AppItem> appListFiltered = new ArrayList<>();
@@ -38,17 +40,23 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppViewH
         this.prefs = context.getSharedPreferences("KillAppsPrefs", Context.MODE_PRIVATE);
 
         for (ApplicationInfo info : installedApps) {
+            if (info == null || info.packageName == null) continue;
             // Skip ourselves
             if (info.packageName.equals(context.getPackageName())) continue;
 
-            AppItem item = new AppItem();
-            item.packageName = info.packageName;
-            item.label = packageManager.getApplicationLabel(info).toString();
-            item.isSystem = (info.flags & ApplicationInfo.FLAG_SYSTEM) != 0;
-            
-            // Restore saved state (defaut to true if not found)
-            item.selected = prefs.getBoolean(item.packageName, true);
-            appList.add(item);
+            try {
+                AppItem item = new AppItem();
+                item.packageName = info.packageName;
+                CharSequence label = packageManager.getApplicationLabel(info);
+                item.label = label != null ? label.toString() : info.packageName;
+                item.isSystem = (info.flags & ApplicationInfo.FLAG_SYSTEM) != 0;
+
+                // Restore saved state (default to true if not found)
+                item.selected = prefs.getBoolean(item.packageName, true);
+                appList.add(item);
+            } catch (Exception e) {
+                Log.w(TAG, "Skipping app due to invalid package metadata: " + info.packageName, e);
+            }
         }
 
         applyFilter();
@@ -110,7 +118,8 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppViewH
         try {
             Drawable icon = packageManager.getApplicationIcon(item.packageName);
             holder.ivIcon.setImageDrawable(icon);
-        } catch (PackageManager.NameNotFoundException e) {
+        } catch (Exception e) {
+            Log.w(TAG, "Fallback icon for package: " + item.packageName, e);
             holder.ivIcon.setImageResource(android.R.drawable.sym_def_app_icon);
         }
 

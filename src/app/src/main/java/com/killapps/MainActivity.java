@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.ProgressBar;
@@ -26,9 +27,11 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.ChipGroup;
 
 import java.io.RandomAccessFile;
+import java.util.Collections;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+    private static final String TAG = "MainActivity";
 
     private RecyclerView rvApps;
     private AppListAdapter adapter;
@@ -172,11 +175,23 @@ public class MainActivity extends AppCompatActivity {
 
         new Thread(() -> {
             PackageManager pm = getPackageManager();
-            List<ApplicationInfo> installedApps = pm.getInstalledApplications(0);
-            
+            List<ApplicationInfo> installedApps;
+            try {
+                installedApps = pm.getInstalledApplications(PackageManager.MATCH_ALL);
+            } catch (Exception e) {
+                Log.e(TAG, "Failed to load installed apps", e);
+                installedApps = Collections.emptyList();
+            }
+
+            List<ApplicationInfo> finalInstalledApps = installedApps;
             runOnUiThread(() -> {
-                adapter = new AppListAdapter(this, installedApps);
-                rvApps.setAdapter(adapter);
+                try {
+                    adapter = new AppListAdapter(this, finalInstalledApps);
+                    rvApps.setAdapter(adapter);
+                } catch (Exception e) {
+                    Log.e(TAG, "Failed to build app adapter", e);
+                    Toast.makeText(this, "Error loading installed apps on this device.", Toast.LENGTH_LONG).show();
+                }
                 pbLoading.setVisibility(View.GONE);
                 rvApps.setVisibility(View.VISIBLE);
                 updateAppCount();
@@ -251,23 +266,38 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        permissionsDialog = new Dialog(this);
-        permissionsDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        permissionsDialog.setContentView(R.layout.dialog_permissions);
-        permissionsDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        permissionsDialog.setCancelable(false); // Force explicit action
-
-        permissionsDialog.setOnDismissListener(dialog -> permissionsDialog = null);
-        
-        updatePermissionDialogState();
-        permissionsDialog.show();
+        try {
+            permissionsDialog = new Dialog(this, R.style.Theme_KillApps_Dialog);
+            permissionsDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            permissionsDialog.setContentView(R.layout.dialog_permissions);
+            Window window = permissionsDialog.getWindow();
+            if (window != null) {
+                window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            }
+            permissionsDialog.setCancelable(false); // Force explicit action
+            permissionsDialog.setOnDismissListener(dialog -> permissionsDialog = null);
+            permissionsDialog.setOnShowListener(dialog -> updatePermissionDialogState());
+            permissionsDialog.show();
+            updatePermissionDialogState();
+        } catch (Exception e) {
+            Log.e(TAG, "Failed to show permissions dialog", e);
+            if (permissionsDialog != null) {
+                permissionsDialog.dismiss();
+                permissionsDialog = null;
+            }
+            Toast.makeText(this, "Could not open permissions dialog on this device.", Toast.LENGTH_LONG).show();
+        }
     }
 
     private void updatePermissionDialogState() {
-        if (permissionsDialog == null || !permissionsDialog.isShowing()) return;
+        if (permissionsDialog == null) return;
 
         MaterialButton btnAccessibility = permissionsDialog.findViewById(R.id.btnGrantAccessibility);
         MaterialButton btnOverlay = permissionsDialog.findViewById(R.id.btnGrantOverlay);
+        if (btnAccessibility == null || btnOverlay == null) {
+            Log.w(TAG, "Permission dialog buttons not found");
+            return;
+        }
 
         // Update Accessibility State
         if (AppKillerService.isServiceActive()) {
