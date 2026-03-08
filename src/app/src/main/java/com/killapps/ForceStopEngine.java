@@ -150,22 +150,37 @@ public class ForceStopEngine {
             Log.d(TAG, "All apps processed. Closed: " + mClosedCount);
 
             // Phase 2: Kill residual background processes via API
-            int bgKilled = killAllBackgroundProcesses();
-            Log.d(TAG, "Background processes killed for " + bgKilled + " packages");
+            try {
+                int bgKilled = killAllBackgroundProcesses();
+                Log.d(TAG, "Background processes killed for " + bgKilled + " packages");
+            } catch (Exception e) {
+                Log.e(TAG, "Phase 2 (killBackgroundProcesses) failed, continuing", e);
+            }
 
             mRunning = false;
             mState = STATE_IDLE;
 
-            // Navigate back to home
-            AppKillerService.performBack();
-            mHandler.postDelayed(() -> {
+            // Phase 3: Clear recent tasks via Accessibility
+            try {
+                AppKillerService.performBack();
+                AppKillerService.clearRecentTasks(success -> {
+                    Log.d(TAG, "Phase 3 (clearRecentTasks) done. Success: " + success);
+                    // Final cleanup — hide overlay and notify listener
+                    if (mOverlay != null) {
+                        mOverlay.hide();
+                        mOverlay = null;
+                    }
+                    if (mListener != null) mListener.onCompleted(mClosedCount);
+                });
+            } catch (Exception e) {
+                Log.e(TAG, "Phase 3 (clearRecentTasks) failed, finishing up", e);
                 AppKillerService.performHome();
                 if (mOverlay != null) {
                     mOverlay.hide();
                     mOverlay = null;
                 }
                 if (mListener != null) mListener.onCompleted(mClosedCount);
-            }, 500);
+            }
             return;
         }
 
