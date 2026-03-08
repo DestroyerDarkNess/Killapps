@@ -1,5 +1,6 @@
 package com.killapps;
 
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
@@ -145,8 +146,13 @@ public class ForceStopEngine {
         if (!mRunning) return;
 
         if (mCurrentIndex >= mAppsToKill.size()) {
-            // All done
+            // All done — Force Stop phase complete
             Log.d(TAG, "All apps processed. Closed: " + mClosedCount);
+
+            // Phase 2: Kill residual background processes via API
+            int bgKilled = killAllBackgroundProcesses();
+            Log.d(TAG, "Background processes killed for " + bgKilled + " packages");
+
             mRunning = false;
             mState = STATE_IDLE;
 
@@ -414,6 +420,39 @@ public class ForceStopEngine {
         mCurrentIndex++;
         mState = STATE_IDLE;
         mHandler.postDelayed(this::processNextApp, 300);
+    }
+
+    // ==== Background Process Killer ==== //
+
+    /**
+     * Kill background processes for ALL installed apps using the ActivityManager API.
+     * This catches residual services that survive the UI-based Force Stop.
+     * Requires KILL_BACKGROUND_PROCESSES permission (already declared in manifest).
+     *
+     * @return number of packages targeted
+     */
+    private int killAllBackgroundProcesses() {
+        ActivityManager am = (ActivityManager) mContext.getSystemService(Context.ACTIVITY_SERVICE);
+        if (am == null) return 0;
+
+        PackageManager pm = mContext.getPackageManager();
+        List<ApplicationInfo> allApps = pm.getInstalledApplications(PackageManager.MATCH_ALL);
+        String myPackage = mContext.getPackageName();
+        int count = 0;
+
+        for (ApplicationInfo app : allApps) {
+            // Don't kill ourselves or the Settings app
+            if (app.packageName.equals(myPackage)) continue;
+            if (app.packageName.equals(mSettingsPackage)) continue;
+
+            try {
+                am.killBackgroundProcesses(app.packageName);
+                count++;
+            } catch (Exception e) {
+                Log.w(TAG, "Failed to kill bg process: " + app.packageName, e);
+            }
+        }
+        return count;
     }
 
     // ==== Utility Methods ====
