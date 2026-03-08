@@ -25,6 +25,14 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".CrashActivity"
+            android:exported="false"
+            android:process=":crash"
+            android:taskAffinity=""
+            android:excludeFromRecents="true"
+            android:theme="@style/Theme.KillApps" />
+
         <service
             android:name=".AppKillerService"
             android:exported="true"
